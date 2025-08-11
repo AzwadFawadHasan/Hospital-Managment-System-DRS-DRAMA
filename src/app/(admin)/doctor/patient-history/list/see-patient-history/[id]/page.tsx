@@ -7,6 +7,7 @@ import Image from "next/image";
 interface PatientInfo {
   patient_id: number;
   patient_name: string;
+  // email: string;
   email: string;
   mobile_number: string;
   gender: string;
