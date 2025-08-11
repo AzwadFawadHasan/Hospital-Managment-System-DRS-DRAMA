@@ -7,6 +7,7 @@ import Image from "next/image";
 interface PatientInfo {
   patient_id: number;
   patient_name: string;
+  // email: string;
   email: string;
   mobile_number: string;
   gender: string;
@@ -17,6 +18,7 @@ interface PatientInfo {
   image_url?: string;
   onboarded_at?: string;
 }
+
 
 interface PrescriptionItem {
   item_id: number;
@@ -230,7 +232,7 @@ export default function Page() {
     return colors[Math.floor(Math.random() * colors.length)];
   };
     groupedTimeline[dateKey].events.push({
-      title: `Prescribed by Dr. ${doctor} ${show_drs_derma}`,
+      title: `Prescribed by ${doctor} ${show_drs_derma}`,
       description: fullDescription,
       author: doctor,
       color: getRandomColor(),//"bg-red-500",
