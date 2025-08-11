@@ -18,6 +18,7 @@ interface PatientInfo {
   onboarded_at?: string;
 }
 
+
 interface PrescriptionItem {
   item_id: number;
   medicine_name: string;
@@ -230,7 +231,7 @@ export default function Page() {
     return colors[Math.floor(Math.random() * colors.length)];
   };
     groupedTimeline[dateKey].events.push({
-      title: `Prescribed by Dr. ${doctor} ${show_drs_derma}`,
+      title: `Prescribed by ${doctor} ${show_drs_derma}`,
       description: fullDescription,
       author: doctor,
       color: getRandomColor(),//"bg-red-500",
