@@ -350,28 +350,6 @@ export default function Page() {
   
 
   // Accordion section component
-  // const AccordionSection = ({ title, html }: { title: string; html: string }) => {
-  //   const [open, setOpen] = useState(false);
-  //   if (!html || html.trim() === "") return null;
-  //   return (
-  //     <div className=" rounded-md mb-2">
-  //       <button
-  //         onClick={() => setOpen(!open)}
-  //         className="w-full flex justify-between items-center px-3 py-2 bg-gray-100 dark:bg-gray-800 font-semibold"
-  //       >
-  //         {title}
-  //         <span>{open ? "▲" : "▼"}</span>
-  //       </button>
-  //       {open && (
-  //         <div
-  //           className="p-3 text-sm bg-white dark:bg-[#0c1427]"
-  //           dangerouslySetInnerHTML={{ __html: html }}
-  //         />
-  //       )}
-  //     </div>
-  //   );
-  // };
-
   const AccordionSection = ({ title, html, defaultOpen = false }: { title: string; html: string; defaultOpen?: boolean }) => {
   const [open, setOpen] = useState(defaultOpen); // Use the defaultOpen prop here
   if (!html || html.trim() === "") return null;
@@ -401,17 +379,7 @@ export default function Page() {
           <h2 className="text-2xl font-bold mb-4">
             Medical History Timeline for <a href="/doctor-profile"></a>{data.patient.patient_name}
           </h2>
-          {/* {data?.patient?.image_url && data.patient.image_url.trim() !== "" && (
-            <div className="w-30 h-30 rounded-full overflow-hidden">
-              <Image
-                src={data.patient.image_url}
-                alt={`${data.patient.patient_name}'s photo`}
-                width={120}
-                height={120}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )} */}
+
         </div>
         <div className="trezo-card-content pt-[10px] pb-[25px]">
           <div className="relative">
@@ -419,66 +387,10 @@ export default function Page() {
 
             {sortedGroupedTimeline.length > 0 ? (
               sortedGroupedTimeline.map((group, index) => (
-                // <div key={index} className="relative pl-[25px] md:pl-[180px] mb-[40px]">
-                //   <span id="timeline-date-event" className="md:absolute md:top-0 md:left-0 text-sm block mb-[10px] md:mb-0 w-[120px] text-right font-semibold text-blue-600 dark:text-blue-300">
-                //     {group.formattedDate}
-                //   </span>
-                  
-
-                //   {group.events.length > 0 && (
-                //     <div className="mb-[25px]">
-                //       {group.events.map((event, idx) => {
-                //         const parsed = JSON.parse(event.description);
-                //         return (
-                //           <div key={idx} className="mb-[16px]">
-
-                //             <span className="block text-black dark:text-white font-semibold text-lg">
-                //               {event.title.startsWith("Prescribed by") ? (
-                //               <>
-
-                //            <a href={`/doctor/view-prescription/${encodeURIComponent(event.prescription_id || '')}`} className="text-blue-600 underline">
-                //             Prescribed
-                //               </a>
-                //             {" by "}
-                //             <a
-                //               href={`/doctor-profile/${encodeURIComponent(event.prescription_id || '')}`}
-                //               className="text-blue-600 underline"
-                //               >
-                //             {event.author}
-                //             </a>
-                //               </>
-                //             //   ) : (
-                //             //   event.title
-                //             // )}
-
-                //                ) : event.title.startsWith("Invoice:") ? (
-                //                   <a href={`/doctor/invoice/view-invoice/${event.invoice_id}`} className="text-blue-600 underline">
-                //                     {event.title}
-                //                   </a>
-                //                 ) : (
-                //                   event.title
-                //                 )}
-                //               </span>
-                            
-
-                //             <AccordionSection title="Invoice Details" html={parsed.invoice} />
-                //             <AccordionSection title="Treatments" html={parsed.treatments} />
-                //             <AccordionSection title="Medicines" html={parsed.medicines} />
-                //             <AccordionSection title="Cost Breakdown" html={parsed.cost} />
-                //           </div>
-                //         );
-                //       })}
-                //     </div>
-                //   )}
-                // </div>
-
-                // <div key={index} className="relative pl-[25px] md:pl-[180px] mb-[40px]">
                 <div key={index} className="relative mb-[40px]">
                     <DateAccordion title={group.formattedDate} defaultOpen={index === 0}>
                       {group.events.length > 0 && (
                         <div className="mb-[25px]">
-                          
-
                           {group.events.map((event, idx) => {
                             const parsed = JSON.parse(event.description);
                             const isFirstDateAccordion = index === 0;
@@ -506,7 +418,6 @@ export default function Page() {
                                     event.title
                                   )}
                                 </span>
-                                
                                 <AccordionSection title="Patient Onboarded" html={parsed.onboard_message}  defaultOpen={isFirstDateAccordion} />
                                 <AccordionSection title="Invoice Details" html={parsed.invoice} defaultOpen={isFirstDateAccordion} />
                                 <AccordionSection title="Treatments" html={parsed.treatments} defaultOpen={isFirstDateAccordion}  />
@@ -515,14 +426,12 @@ export default function Page() {
                                </div>
                             );
                           })}
-
-
                         </div>
                       )}
                     </DateAccordion>
                   </div>
-              ))
-            ) : (
+                ))
+              ) : (
               <div className="text-center py-4 text-gray-500 dark:text-gray-400">
                 No history available.
               </div>
