@@ -91,43 +91,7 @@ const PatientsListTable: React.FC = () => {
     }
   };
 
-  // const handleCheckboxChange = (id: number) => {
-  //   setAllPatients((prev) =>
-  //     prev.map((patient) =>
-  //       patient.patient_id === id ? { ...patient, checked: !patient.checked } : patient
-  //     )
-  //   );
-  //   setFilteredPatients((prev) =>
-  //     prev.map((patient) =>
-  //       patient.patient_id === id ? { ...patient, checked: !patient.checked } : patient
-  //     )
-  //   );
-  // };
 
-  // const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const isChecked = e.target.checked;
-  //   setAllPatients((prev) => prev.map((p) => ({ ...p, checked: isChecked })));
-  //   setFilteredPatients((prev) => prev.map((p) => ({ ...p, checked: isChecked })));
-  // };
-
-  //  const handleDelete = async (id: number) => {
-  //   if (confirm("Are you sure you want to delete this patient?")) {
-  //     try {
-  //       const res = await fetch(`/api/patient/deletepatient/${id}`, {
-  //         method: "DELETE",
-  //       });
-
-  //       if (res.ok) {
-  //         setAllPatients((prev) => prev.filter((patient) => patient.patient_id !== id));
-  //         setFilteredPatients((prev) => prev.filter((patient) => patient.patient_id !== id));
-  //       } else {
-  //         console.error("Failed to delete patient");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error deleting patient:", error);
-  //     }
-  //   }
-  // };
 
   //view patient details in modal
   const handleViewClick = async (id: number) => {
@@ -186,15 +150,7 @@ const PatientsListTable: React.FC = () => {
                   <th className="whitespace-nowrap uppercase text-[10px] font-bold tracking-[1px] ltr:text-left rtl:text-right pt-0 pb-[12.5px] px-[20px] text-gray-500 dark:text-gray-400 ltr:first:pl-0 rtl:first:pr-0 ltr:last:pr-0 rtl:first:pl-0">
                     <div className="flex items-center gap-[10px]">
                       <div className="form-check relative top-[1.2px]">
-                        {/* <input
-                          type="checkbox"
-                          className="cursor-pointer"
-                          checked={
-                            filteredPatients.length > 0 &&
-                            filteredPatients.every((p) => p.checked)
-                          }
-                          onChange={handleSelectAll}
-                        /> */}
+             
                       </div>
                       Patient ID
                     </div>
@@ -202,9 +158,7 @@ const PatientsListTable: React.FC = () => {
                   <th className="whitespace-nowrap uppercase text-[10px] font-bold tracking-[1px] ltr:text-left rtl:text-right pt-0 pb-[12.5px] px-[20px] text-gray-500 dark:text-gray-400 ltr:first:pl-0 rtl:first:pr-0 ltr:last:pr-0 rtl:first:pl-0">
                     Patient Name
                   </th>
-                  {/* <th className="whitespace-nowrap uppercase text-[10px] font-bold tracking-[1px] ltr:text-left rtl:text-right pt-0 pb-[12.5px] px-[20px] text-gray-500 dark:text-gray-400 ltr:first:pl-0 rtl:first:pr-0 ltr:last:pr-0 rtl:first:pl-0">
-                    Email
-                  </th> */}
+          
                   <th className="whitespace-nowrap uppercase text-[10px] font-bold tracking-[1px] ltr:text-left rtl:text-right pt-0 pb-[12.5px] px-[20px] text-gray-500 dark:text-gray-400 ltr:first:pl-0 rtl:first:pr-0 ltr:last:pr-0 rtl:first:pl-0">
                     Phone No.
                   </th>
@@ -217,19 +171,11 @@ const PatientsListTable: React.FC = () => {
                   <th className="whitespace-nowrap uppercase text-[10px] font-bold tracking-[1px] ltr:text-left rtl:text-right pt-0 pb-[12.5px] px-[20px] text-gray-500 dark:text-gray-400 ltr:first:pl-0 rtl:first:pr-0 ltr:last:pr-0 rtl:first:pl-0">
                     Next Visit
                   </th>
-                  {/* <th className="whitespace-nowrap uppercase text-[10px] font-bold tracking-[1px] ltr:text-left rtl:text-right pt-0 pb-[12.5px] px-[20px] text-gray-500 dark:text-gray-400 ltr:first:pl-0 rtl:first:pr-0 ltr:last:pr-0 rtl:first:pl-0">
-                    Due Amount
-                  </th>
-                  <th className="whitespace-nowrap uppercase text-[10px] font-bold tracking-[1px] ltr:text-left rtl:text-right pt-0 pb-[12.5px] px-[20px] text-gray-500 dark:text-gray-400 ltr:first:pl-0 rtl:first:pr-0 ltr:last:pr-0 rtl:first:pl-0">
-                    Paid Amount
-                  </th> */}
-
+    
                   <th className="whitespace-nowrap uppercase text-[10px] font-bold tracking-[1px] ltr:text-left rtl:text-right pt-0 pb-[12.5px] px-[20px] text-gray-500 dark:text-gray-400 ltr:first:pl-0 rtl:first:pr-0 ltr:last:pr-0 rtl:first:pl-0">
                     Gender
                   </th>
-                  {/* <th className="whitespace-nowrap uppercase text-[10px] font-bold tracking-[1px] ltr:text-left rtl:text-right pt-0 pb-[12.5px] px-[20px] text-gray-500 dark:text-gray-400 ltr:first:pl-0 rtl:first:pr-0 ltr:last:pr-0 rtl:first:pl-0">
-                    Status
-                  </th> */}
+           
                   <th className="whitespace-nowrap uppercase text-[10px] font-bold tracking-[1px] ltr:text-left rtl:text-right pt-0 pb-[12.5px] px-[20px] text-gray-500 dark:text-gray-400 ltr:first:pl-0 rtl:first:pr-0 ltr:last:pr-0 rtl:first:pl-0">
                     Action
                   </th>
@@ -242,14 +188,7 @@ const PatientsListTable: React.FC = () => {
                     <tr key={patient?.patient_id ?? `patient-${index}`}>
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[12.5px] ltr:first:pl-0 rtl:first:pr-0 border-b border-primary-50 dark:border-[#172036] ltr:last:pr-0 rtl:last:pl-0">
                         <div className="flex items-center gap-[10px]">
-                          {/* <div className="form-check relative top-[1.2px]">
-                            <input
-                              type="checkbox"
-                              className="cursor-pointer"
-                              checked={patient.checked || false}
-                              onChange={() => handleCheckboxChange(patient.patient_id)}
-                            />
-                          </div> */}
+      
                           <span className="block ms-5 text-xs font-semibold text-gray-600 dark:text-gray-400">
                             {patient.patient_id}
                           </span>
@@ -269,29 +208,10 @@ const PatientsListTable: React.FC = () => {
                           <span className="font-semibold inline-block">
                             {patient.patient_name}
                           </span>
-                          {/* <Link
-                              href="/doctor/prescriptions"
-                              className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] text-primary-500 border border-primary-500 hover:bg-primary-500 hover:text-white"
-                            >
-                              <span className="inline-block relative ltr:pl-[22px] rtl:pr-[22px]">
-                                <i className="material-symbols-outlined !text-[22px] absolute ltr:-left-[4px] rtl:-right-[4px] top-1/2 -translate-y-1/2">
-                                  Add
-                                </i>
-                                Prescribed
-                              </span>
-                            </Link> */}
+
                         </div>
                       </td>
-                      {/* <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[12.5px] ltr:first:pl-0 rtl:first:pr-0 border-b border-primary-50 dark:border-[#172036] ltr:last:pr-0 rtl:last:pl-0">
-                        <span className="block text-xs font-semibold text-primary-500">
-                          {patient.patient_name}
-                        </span>
-                      </td> */}
-                      {/* <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[12.5px] ltr:first:pl-0 rtl:first:pr-0 border-b border-primary-50 dark:border-[#172036] ltr:last:pr-0 rtl:last:pl-0">
-                        <span className="block text-xs font-semibold text-gray-500 dark:text-gray-400">
-                          {patient?.email}
-                        </span>
-                      </td> */}
+
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[12.5px] ltr:first:pl-0 rtl:first:pr-0 border-b border-primary-50 dark:border-[#172036] ltr:last:pr-0 rtl:last:pl-0">
                         <span className="block text-xs font-semibold text-gray-500 dark:text-gray-400">
                           {patient.mobile_number}
@@ -312,33 +232,17 @@ const PatientsListTable: React.FC = () => {
                           ---
                         </span>
                       </td>
-                      {/* <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[12.5px] ltr:first:pl-0 rtl:first:pr-0 border-b border-primary-50 dark:border-[#172036] ltr:last:pr-0 rtl:last:pl-0">
-                        <span className="block text-xs font-semibold text-gray-500 dark:text-gray-400">
-                         ---
-                        </span>
-                      </td>
-                      <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[12.5px] ltr:first:pl-0 rtl:first:pr-0 border-b border-primary-50 dark:border-[#172036] ltr:last:pr-0 rtl:last:pl-0">
-                        <span className="block text-xs font-semibold text-gray-500 dark:text-gray-400">
-                         ---
-                        </span>
-                      </td> */}
+
 
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[12.5px] ltr:first:pl-0 rtl:first:pr-0 border-b border-primary-50 dark:border-[#172036] ltr:last:pr-0 rtl:last:pl-0">
                         <span className="block text-xs font-semibold text-gray-500 dark:text-gray-400">
                           {patient?.gender}
                         </span>
                       </td>
-                      {/* <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[12.5px] ltr:first:pl-0 rtl:first:pr-0 border-b border-primary-50 dark:border-[#172036] ltr:last:pr-0 rtl:last:pl-0">
-                        <span className="block text-xs font-semibold text-gray-500 dark:text-gray-400">
-                          {patient?.status}
-                        </span>
-                      </td> */}
+     
                       <td className="ltr:text-left rtl:text-right whitespace-nowrap px-[20px] py-[12.5px] ltr:first:pl-0 rtl:first:pr-0 border-b border-primary-50 dark:border-[#172036] ltr:last:pr-0 rtl:last:pl-0">
                         <div className="flex items-center gap-[9px]">
-                          {/* View button */}
-                          {/* <Link href={`view-patient/${patient.patient_id}`}> */}
-                          {/* / */}
-
+          
                           <Link
                             href={`/doctor/prescriptions/${patient.patient_id}`}
                             className="inline-block transition-all rounded-md font-medium px-[13px] py-[6px] border text-primary-500 border-primary-500 hover:bg-primary-500 hover:text-white"
@@ -359,9 +263,7 @@ const PatientsListTable: React.FC = () => {
                               visibility
                             </i>
                           </button>
-                          {/* </Link> */}
-
-                          {/* Edit button */}
+          
                           <Link
                             href={`/doctor/patients-list/edit-patient/${patient.patient_id}`}
                           >
@@ -375,14 +277,6 @@ const PatientsListTable: React.FC = () => {
                             </button>
                           </Link>
 
-                          {/* Delete button */}
-                          {/* <button
-                            type="button"
-                            className="text-danger-500 leading-none custom-tooltip"
-                            // onClick={() => handleDelete(patient.patient_id)}
-                          >
-                            <i className="material-symbols-outlined !text-md">delete</i>
-                          </button> */}
                         </div>
                       </td>
                     </tr>

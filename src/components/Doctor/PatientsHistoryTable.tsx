@@ -15,9 +15,9 @@ interface Patient {
   email: string;
   date_of_birth: string;
   gender: string;
-   age:string;
-    blood_group:string;
-    weight:string;
+  age: string;
+  blood_group: string;
+  weight: string;
   address_line1: string;
   city: string;
   state_province: string;
@@ -39,7 +39,7 @@ const PatientsHistoryTable: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   console.log(setSelectedPatient)
-//end modal state
+  //end modal state
   const [allPatients, setAllPatients] = useState<Patient[]>([]);
   const [filteredPatients, setFilteredPatients] = useState<Patient[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -90,39 +90,39 @@ const PatientsHistoryTable: React.FC = () => {
   };
 
 
-//  const handleDelete = async (id: number) => {
-//   if (confirm("Are you sure you want to delete this patient?")) {
-//     try {
-//       const res = await fetch(`/api/patient/deletepatient/${id}`, {
-//         method: "DELETE",
-//       });
+  //  const handleDelete = async (id: number) => {
+  //   if (confirm("Are you sure you want to delete this patient?")) {
+  //     try {
+  //       const res = await fetch(`/api/patient/deletepatient/${id}`, {
+  //         method: "DELETE",
+  //       });
 
-//       if (res.ok) {
-//         setAllPatients((prev) => prev.filter((patient) => patient.patient_id !== id));
-//         setFilteredPatients((prev) => prev.filter((patient) => patient.patient_id !== id));
-//       } else {
-//         console.error("Failed to delete patient");
-//       }
-//     } catch (error) {
-//       console.error("Error deleting patient:", error);
-//     }
-//   }
-// }; 
+  //       if (res.ok) {
+  //         setAllPatients((prev) => prev.filter((patient) => patient.patient_id !== id));
+  //         setFilteredPatients((prev) => prev.filter((patient) => patient.patient_id !== id));
+  //       } else {
+  //         console.error("Failed to delete patient");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error deleting patient:", error);
+  //     }
+  //   }
+  // }; 
 
 
-//view patient details in modal
-// const handleViewClick = async (id: number) => {
-//   try {
-//     // const res = await fetch(`/api/patient/viewpatient/${id}`); // Adjust path based on your route
-//     const res = await fetch(`/api/view-patient-history/${id}`); // Adjust path based on your route
-//     if (!res.ok) throw new Error('Failed to fetch');
-//     const data = await res.json();
-//     setSelectedPatient(data);
-//     setIsOpen(true);
-//   } catch (error) {
-//     console.error("Error fetching patient:", error);
-//   }
-// };
+  //view patient details in modal
+  // const handleViewClick = async (id: number) => {
+  //   try {
+  //     // const res = await fetch(`/api/patient/viewpatient/${id}`); // Adjust path based on your route
+  //     const res = await fetch(`/api/view-patient-history/${id}`); // Adjust path based on your route
+  //     if (!res.ok) throw new Error('Failed to fetch');
+  //     const data = await res.json();
+  //     setSelectedPatient(data);
+  //     setIsOpen(true);
+  //   } catch (error) {
+  //     console.error("Error fetching patient:", error);
+  //   }
+  // };
 
 
 
@@ -222,14 +222,14 @@ const PatientsHistoryTable: React.FC = () => {
                         <div className="flex items-center gap-[9px]">
                           {/* View button */}
                           {/* <Link href={`view-patient/${patient.patient_id}`}> */}
-                            <button
-                              type="button"
-                              className="text-primary-500 leading-none custom-tooltip"
-                              onClick={() => router.push(`/doctor/patient-history/list/see-patient-history/${patient.patient_id}`)}
-                              
-                            >
-                              <i className="material-symbols-outlined !text-md">visibility</i>
-                            </button>
+                          <button
+                            type="button"
+                            className="text-primary-500 leading-none custom-tooltip"
+                            onClick={() => router.push(`/doctor/patient-history/list/see-patient-history/${patient.patient_id}`)}
+
+                          >
+                            <i className="material-symbols-outlined !text-md">visibility</i>
+                          </button>
                         </div>
                       </td>
 
@@ -259,11 +259,10 @@ const PatientsHistoryTable: React.FC = () => {
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border ${
-                    currentPage === 1
+                  className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border ${currentPage === 1
                       ? "border-gray-200 dark:border-[#172036] text-gray-400 cursor-not-allowed"
                       : "border-gray-100 dark:border-[#172036] hover:bg-primary-500 hover:text-white hover:border-primary-500"
-                  }`}
+                    }`}
                 >
                   <span className="opacity-0">0</span>
                   <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
@@ -280,11 +279,10 @@ const PatientsHistoryTable: React.FC = () => {
                   >
                     <button
                       onClick={() => handlePageChange(page)}
-                      className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md ${
-                        currentPage === page
+                      className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md ${currentPage === page
                           ? "border border-primary-500 bg-primary-500 text-white"
                           : "border border-gray-100 dark:border-[#172036] hover:bg-primary-500 hover:text-white hover:border-primary-500"
-                      }`}
+                        }`}
                     >
                       {page}
                     </button>
@@ -296,11 +294,10 @@ const PatientsHistoryTable: React.FC = () => {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border ${
-                    currentPage === totalPages
+                  className={`w-[31px] h-[31px] block leading-[29px] relative text-center rounded-md border ${currentPage === totalPages
                       ? "border-gray-200 dark:border-[#172036] text-gray-400 cursor-not-allowed"
                       : "border-gray-100 dark:border-[#172036] hover:bg-primary-500 hover:text-white hover:border-primary-500"
-                  }`}
+                    }`}
                 >
                   <span className="opacity-0">0</span>
                   <i className="material-symbols-outlined left-0 right-0 absolute top-1/2 -translate-y-1/2">
@@ -312,59 +309,59 @@ const PatientsHistoryTable: React.FC = () => {
           </div>
         </div>
       </div>
-{/* view modal */}
-  {isOpen && selectedPatient && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.4)]">
-    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl relative">
-      <button
-        className="absolute top-2 right-2 text-xl text-gray-500 hover:text-black"
-        onClick={() => setIsOpen(false)}
-      >
-        &times;
-      </button>
-      {/* <h2 className="text-2xl font-bold mb-2">Patient Details</h2> */}
-      <p className="text-lg font-bold underline">Patient Details:</p>
-      <div className="space-y-2 text-sm">
-        <Image
-          src={selectedPatient.image_url || "/uploads/default.avif"}
-          width={100}
-          height={100}
-          className="inline-block rounded-full"
-          alt="user-image"
-        />
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-              <p><strong>Name:</strong> {selectedPatient?.patient_name}</p>
-              <p><strong>Email:</strong> {selectedPatient?.email}</p>
-              <p><strong>Phone:</strong> {selectedPatient?.mobile_number}</p>
-               <p><strong>Emergency Contact:</strong> {selectedPatient?.emergency_contact_phone}</p>
-              <p><strong>DOB:</strong> {new Date(selectedPatient?.date_of_birth).toLocaleDateString()}</p>
-              <p><strong>Gender:</strong> {selectedPatient?.gender}</p>
-              <p><strong>Age:</strong> {selectedPatient?.age}</p>
-              <p><strong>Blood Group:</strong> {selectedPatient?.blood_group}</p>
-              <p><strong>Weight:</strong> {selectedPatient?.weight}</p>
-              <p><strong>State:</strong> {selectedPatient?.state_province}</p>
-          </div>
-          <div>
-            
-            <p><strong>Postal Code:</strong> {selectedPatient?.postal_code}</p>
-            <p><strong>Assigns Doctor:</strong> DR. X*</p>
-            <p><strong>Last Visit:</strong> {new Date(selectedPatient?.created_at).toLocaleDateString()}</p>
-            <p><strong>Next Visit:</strong> May 2024*</p>
-            <p><strong>Treatment:</strong> DR. X*</p>
-            <p><strong>Due Amount:</strong> 50000*</p>
-            <p><strong>Paid Amount:</strong> 50000*</p>
-            <p><strong>Status:</strong> {selectedPatient?.status}</p>
+      {/* view modal */}
+      {isOpen && selectedPatient && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.4)]">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl relative">
+            <button
+              className="absolute top-2 right-2 text-xl text-gray-500 hover:text-black"
+              onClick={() => setIsOpen(false)}
+            >
+              &times;
+            </button>
+            {/* <h2 className="text-2xl font-bold mb-2">Patient Details</h2> */}
+            <p className="text-lg font-bold underline">Patient Details:</p>
+            <div className="space-y-2 text-sm">
+              <Image
+                src={selectedPatient.image_url || "/uploads/default.avif"}
+                width={100}
+                height={100}
+                className="inline-block rounded-full"
+                alt="user-image"
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <p><strong>Name:</strong> {selectedPatient?.patient_name}</p>
+                  <p><strong>Email:</strong> {selectedPatient?.email}</p>
+                  <p><strong>Phone:</strong> {selectedPatient?.mobile_number}</p>
+                  <p><strong>Emergency Contact:</strong> {selectedPatient?.emergency_contact_phone}</p>
+                  <p><strong>DOB:</strong> {new Date(selectedPatient?.date_of_birth).toLocaleDateString()}</p>
+                  <p><strong>Gender:</strong> {selectedPatient?.gender}</p>
+                  <p><strong>Age:</strong> {selectedPatient?.age}</p>
+                  <p><strong>Blood Group:</strong> {selectedPatient?.blood_group}</p>
+                  <p><strong>Weight:</strong> {selectedPatient?.weight}</p>
+                  <p><strong>State:</strong> {selectedPatient?.state_province}</p>
+                </div>
+                <div>
+
+                  <p><strong>Postal Code:</strong> {selectedPatient?.postal_code}</p>
+                  <p><strong>Assigns Doctor:</strong> DR. X*</p>
+                  <p><strong>Last Visit:</strong> {new Date(selectedPatient?.created_at).toLocaleDateString()}</p>
+                  <p><strong>Next Visit:</strong> May 2024*</p>
+                  <p><strong>Treatment:</strong> DR. X*</p>
+                  <p><strong>Due Amount:</strong> 50000*</p>
+                  <p><strong>Paid Amount:</strong> 50000*</p>
+                  <p><strong>Status:</strong> {selectedPatient?.status}</p>
+                </div>
+              </div>
+
+              {/* Add more fields as needed */}
+            </div>
           </div>
         </div>
-        
-        {/* Add more fields as needed */}
-      </div>
-    </div>
-  </div>
-// view modal
+        // view modal
 
-)}
+      )}
 
 
 
