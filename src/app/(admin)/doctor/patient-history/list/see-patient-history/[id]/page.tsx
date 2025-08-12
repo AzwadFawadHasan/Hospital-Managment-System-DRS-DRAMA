@@ -90,6 +90,8 @@ interface DateAccordionProps {
   defaultOpen?: boolean;
 }
 
+
+
 export default function Page() {
   const { id } = useParams<{ id: string }>();
   const [data, setData] = useState<PatientHistoryResponse | null>(null);
@@ -166,7 +168,7 @@ export default function Page() {
             };
           }
           groupedTimeline[onboardDateKey].events.push({
-          title: "Patient Onboarded",
+              title: "Patient Onboarded",
               // Correct the description to be a valid JSON string
               description: JSON.stringify({
               // onboard_message: `Patient ${data.patient.patient_name} was registered in the system at ${getDateTimeKey(data.patient.onboarded_at)}.`,
@@ -350,19 +352,43 @@ export default function Page() {
   
 
   // Accordion section component
-  const AccordionSection = ({ title, html, defaultOpen = false }: { title: string; html: string; defaultOpen?: boolean }) => {
-  const [open, setOpen] = useState(defaultOpen); // Use the defaultOpen prop here
+//   const AccordionSection = ({ title, html, defaultOpen = false }: { title: string; html: string; defaultOpen?: boolean }) => {
+//   const [open, setOpen] = useState(defaultOpen); // Use the defaultOpen prop here
+//   if (!html || html.trim() === "") return null;
+//   return (
+//     <div className=" rounded-md mb-2">
+//       <button
+//         onClick={() => setOpen(!open)}
+//         className="w-full flex justify-between items-center px-3 py-2 bg-gray-100 dark:bg-gray-800 font-semibold"
+//       >
+//         {title}
+//         <span>{open ? "▲" : "▼"}</span>
+//       </button>
+//       {open && ( // 'open' state is now initialized by defaultOpen
+//         <div
+//           className="p-3 text-sm bg-white dark:bg-[#0c1427]"
+//           dangerouslySetInnerHTML={{ __html: html }}
+//         />
+//       )}
+//     </div>
+//   );
+// };
+const AccordionSection = ({ title, html, defaultOpen = false }: { title: React.ReactNode; html: string; defaultOpen?: boolean }) => {
+  const [open, setOpen] = useState(defaultOpen);
+
   if (!html || html.trim() === "") return null;
+
   return (
     <div className=" rounded-md mb-2">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex justify-between items-center px-3 py-2 bg-gray-100 dark:bg-gray-800 font-semibold"
       >
+        {/* The title can now be a string or a React element */}
         {title}
         <span>{open ? "▲" : "▼"}</span>
       </button>
-      {open && ( // 'open' state is now initialized by defaultOpen
+      {open && (
         <div
           className="p-3 text-sm bg-white dark:bg-[#0c1427]"
           dangerouslySetInnerHTML={{ __html: html }}
@@ -377,61 +403,80 @@ export default function Page() {
       <div className="trezo-card bg-white dark:bg-[#0c1427] p-[20px] md:p-[25px] rounded-md">
         <div className="trezo-card-header mb-[25px] flex items-center justify-between">
           <h2 className="text-2xl font-bold mb-4">
-            Medical History Timeline for <a href="/doctor-profile"></a>{data.patient.patient_name}
+            Medical History Timeline for <a href={`/view-patient/${encodeURIComponent(data.patient.patient_id || '')}`} >{data.patient.patient_name}</a>
           </h2>
-
         </div>
         <div className="trezo-card-content pt-[10px] pb-[25px]">
           <div className="relative">
             <span className="block absolute top-0 bottom-0 left-[6px] md:left-[150px] mt-[5px] border-l border-dashed border-gray-100 dark:border-[#172036]"></span>
-
             {sortedGroupedTimeline.length > 0 ? (
               sortedGroupedTimeline.map((group, index) => (
                 <div key={index} className="relative mb-[40px]">
-                    <DateAccordion title={group.formattedDate} defaultOpen={index === 0}>
-                      {group.events.length > 0 && (
-                        <div className="mb-[25px]">
-                          {group.events.map((event, idx) => {
-                            const parsed = JSON.parse(event.description);
-                            const isFirstDateAccordion = index === 0;
-                            return (
-                              <div key={idx} className="mb-[16px]">
+                  <DateAccordion title={group.formattedDate} defaultOpen={index === 0}>
+                    {group.events.length > 0 && (
+                      <div className="mb-[25px]">
+                        {group.events.map((event, idx) => {
+                          const parsed = JSON.parse(event.description);
+                          const isFirstDateAccordion = index === 0;
+                          // Remove Patient Onboarded title and Invoice hyperlink title
+                          // Only show event title for prescriptions, not for onboarded or invoice events
+                          const showTitle = event.title.startsWith("Prescribed by");
+                          return (
+                            <div key={idx} className="mb-[16px]">
+                              {showTitle && (
                                 <span className="block text-black dark:text-white font-semibold text-lg">
-                                  {event.title.startsWith("Prescribed by") ? (
-                                    <>
-                                      <a href={`/doctor/view-prescription/${encodeURIComponent(event.prescription_id || '')}`} className="text-blue-600 underline">
-                                        Prescribed
-                                      </a>
-                                      {" by "}
-                                      <a
-                                        href={`/doctor-profile/${encodeURIComponent(event.prescription_id || '')}`}
-                                        className="text-blue-600 underline"
-                                      >
-                                        {event.author}
-                                      </a>
-                                    </>
-                                  ) : event.title.startsWith("Invoice:") ? (
-                                    <a href={`/doctor/invoice/view-invoice/${event.invoice_id}`} className="text-blue-600 underline">
-                                      {event.title}
+                                  <>
+                                    <a href={`/doctor/view-prescription/${encodeURIComponent(event.prescription_id || '')}`} className="text-blue-600 underline">
+                                      Prescribed
                                     </a>
-                                  ) : (
-                                    event.title
-                                  )}
+                                    {" by "}
+                                    <a
+                                      href={`/doctor-profile/${encodeURIComponent(event.prescription_id || '')}`}
+                                      className="text-blue-600 underline"
+                                    >
+                                      {event.author}
+                                    </a>
+                                  </>
                                 </span>
-                                <AccordionSection title="Patient Onboarded" html={parsed.onboard_message}  defaultOpen={isFirstDateAccordion} />
-                                <AccordionSection title="Invoice Details" html={parsed.invoice} defaultOpen={isFirstDateAccordion} />
-                                <AccordionSection title="Treatments" html={parsed.treatments} defaultOpen={isFirstDateAccordion}  />
-                                <AccordionSection title="Medicines" html={parsed.medicines}  defaultOpen={isFirstDateAccordion} />
-                                <AccordionSection title="Cost Breakdown" html={parsed.cost} defaultOpen={isFirstDateAccordion} />
-                               </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </DateAccordion>
-                  </div>
-                ))
-              ) : (
+                              )}
+                              {/* Patient Onboarded section: only show accordion, not title */}
+                              {parsed.onboard_message && (
+                                <AccordionSection title="Patient Onboarded" html={parsed.onboard_message} defaultOpen={isFirstDateAccordion} />
+                              )}
+                              {/* Invoice Details section: move hyperlink inside accordion if invoice_id exists */}
+                              {parsed.invoice && (
+                               <AccordionSection
+                                          title={
+                                            event.invoice_id ? (
+                                              <a
+                                                href={`/doctor/invoice/view-invoice/${event.invoice_id}`}
+                                                className="text-blue-600 underline"
+                                              >
+                                                Invoice Details
+                                              </a>
+                                            ) : (
+                                              "Invoice Details"
+                                            )
+                                          }
+                                          html={
+                                             parsed.invoice
+                                          }
+                                          defaultOpen={isFirstDateAccordion}
+                                        />
+
+                              )}
+                              <AccordionSection title="Treatments" html={parsed.treatments} defaultOpen={isFirstDateAccordion} />
+                              <AccordionSection title="Medicines" html={parsed.medicines} defaultOpen={isFirstDateAccordion} />
+                              <AccordionSection title="Cost Breakdown" html={parsed.cost} defaultOpen={isFirstDateAccordion} />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </DateAccordion>
+                </div>
+              ))
+            ) : (
               <div className="text-center py-4 text-gray-500 dark:text-gray-400">
                 No history available.
               </div>
@@ -442,7 +487,4 @@ export default function Page() {
     </div>
   );
 }
-
-
-
 
