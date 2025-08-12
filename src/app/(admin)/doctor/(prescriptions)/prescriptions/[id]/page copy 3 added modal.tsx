@@ -173,7 +173,11 @@ const AddAppointment: React.FC = () => {
   
 //modal states
 const [isOpen, setIsOpen] = useState(false);
-const [selectedPatient, setSelectedPatient] = useState<any>(null); 
+const [selectedPatient, setSelectedPatient] = useState<any>(null); // Use a more specific type if you have one for patient data
+
+// setNewMedicineInput, brandName state for adding new medicine 
+// const [newMedicineInput, setNewMedicineInput] = useState("");
+// const [newMedicineBrandInput, setNewMedicineBrandInput] = useState(""); 
 
 //Set Loading State
 const [loading, setLoading] = useState(false);
@@ -203,6 +207,7 @@ async function getPrescribedData(id: string) {
       if (data) {
         setDoctors(data.doctors);
         setTreatmentList(data.treatments);
+        // setMedicinesdata(data.medicines);
 
         setFormData({
           patient_id: data.patient.patient_id,
@@ -326,32 +331,34 @@ if(name === "nextdate"){
     return; 
   }
   
-    // Handle doctor discount type or amount change
-    if (name === "doctorDiscountType" || name === "doctorDiscountAmount") {
-      setFormData((prev) => {
-        const doctor_fee = prev.doctor_fee;
-        const discountType =
-          name === "doctorDiscountType" ? value : prev.doctorDiscountType;
-        const discountAmount = Number(
-          name === "doctorDiscountAmount" ? value : prev.doctorDiscountAmount
-        );
 
-        let payable = doctor_fee;
 
-        if (discountType === "Percentage") {
-          payable = doctor_fee - (doctor_fee * discountAmount) / 100;
-        } else if (discountType === "Flat Rate") {
-          payable = doctor_fee - discountAmount;
-        }
+// Handle doctor discount type or amount change
+if (name === "doctorDiscountType" || name === "doctorDiscountAmount") {
+  setFormData((prev) => {
+    const doctor_fee = prev.doctor_fee;
+    const discountType =
+      name === "doctorDiscountType" ? value : prev.doctorDiscountType;
+    const discountAmount = Number(
+      name === "doctorDiscountAmount" ? value : prev.doctorDiscountAmount
+    );
 
-        return {
-          ...prev,
-          [name]: value,
-          payableDoctorFee: payable < 0 ? 0 : Number(payable.toFixed(2)),
-        };
-      });
-      return;
+    let payable = doctor_fee;
+
+    if (discountType === "Percentage") {
+      payable = doctor_fee - (doctor_fee * discountAmount) / 100;
+    } else if (discountType === "Flat Rate") {
+      payable = doctor_fee - discountAmount;
     }
+
+    return {
+      ...prev,
+      [name]: value,
+      payableDoctorFee: payable < 0 ? 0 : Number(payable.toFixed(2)),
+    };
+  });
+  return;
+}
 
 
 
@@ -467,8 +474,6 @@ const handleViewClick = async (id: string) => {
     }
     const data = await res.json();
     setSelectedPatient(data); // Set the fetched data to state
-    console.log(data);
-    alert(data);
     setIsOpen(true); // Open the modal
   } catch (error) {
     console.error("Error fetching patient:", error);
@@ -1170,11 +1175,63 @@ console.log(treatments)
 
 
    {isOpen && selectedPatient && (
-          // view modal starts
-          <div className="p-6 space-y-6">
-                    {/* {selectedPatient}            */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.4)]">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl relative">
+            <button
+              className="absolute top-2 right-2 text-xl text-gray-500 hover:text-black"
+              onClick={() => setIsOpen(false)}
+            >
+              &times;
+            </button>
+            {/* <h2 className="text-2xl font-bold mb-2">Patient Details</h2> */}
+            <p className="text-lg font-bold underline">Patient Details:</p>
+            <div className="space-y-2 text-sm">
+              <Image
+                src={selectedPatient.image_url || "/uploads/default.avif"}
+                width={100}
+                height={100}
+                className="inline-block rounded-full"
+                alt="user-image"
+              />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <p><strong>Name:</strong> {selectedPatient?.patient_name}</p>
+                    <p><strong>Email:</strong> {selectedPatient?.email}</p>
+                    <p><strong>Phone:</strong> {selectedPatient?.mobile_number}</p>
+                    <p><strong>Emergency Contact:</strong> {selectedPatient?.emergency_contact_phone}</p>
+                    <p><strong>DOB:</strong> {new Date(selectedPatient?.date_of_birth).toLocaleDateString()}</p>
+                    <p><strong>Gender:</strong> {selectedPatient?.gender}</p>
+                    <p><strong>Age:</strong> {selectedPatient?.age}</p>
+                    
+                </div>
+                <div>
+                  <p><strong>Blood Group:</strong> {selectedPatient?.blood_group}</p>
+                    <p><strong>Weight:</strong> {selectedPatient?.weight}</p>
+                    <p><strong>State:</strong> {selectedPatient?.state_province}</p>
+                  <p><strong>Postal Code:</strong> {selectedPatient?.postal_code}</p>
+                  {/* <p><strong>Assigns Doctor:</strong> DR. X*</p> */}
+                  <p><strong>Last Visit:</strong> {selectedPatient?.created_at && (
+                                  new Date(selectedPatient.created_at)
+                                    .toLocaleDateString('en-GB') // This gives you DD/MM/YYYY
+                                    .replace(/\//g, '-')         // Replace slashes with dashes
+                                )}</p>
+                  <p><strong>Next Visit:</strong> {selectedPatient?.set_next_appoinmnet && (
+                                  new Date(selectedPatient.set_next_appoinmnet)
+                                    .toLocaleDateString('en-GB') // This gives you DD/MM/YYYY
+                                    .replace(/\//g, '-')         // Replace slashes with dashes
+                                )}</p>
+                  {/* <p><strong>Treatment:</strong> DR. X*</p>
+                  <p><strong>Due Amount:</strong> 50000*</p>
+                  <p><strong>Paid Amount:</strong> 50000*</p> */}
+                  <p><strong>Status:</strong> {selectedPatient?.status}</p>
+                </div>
+              </div>
+              
+              {/* Add more fields as needed */}
+            </div>
           </div>
-          // view modal ends
+        </div>
+            // view modal
         )}
 
         
