@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 
 import { useParams } from "next/navigation";
-// import { NextResponse } from "next/server";
 import { useEffect, useState } from "react";
 import Select, { StylesConfig, GroupBase } from "react-select";
 import Swal from 'sweetalert2';
@@ -32,6 +31,10 @@ interface FormData {
   blood_group: string;
   totalPayableAmount: string,
   is_drs_derma: string;
+  chief_complaint_cc: string;
+  drug_history_dh: string;
+  relevant_findings_rf: string;
+  on_examination_oe: string;
   next_appoinment: string;
 }
 
@@ -40,10 +43,16 @@ interface Dosage {
   amount: string;
 }
 
+// interface Medicine {
+//   name: string;
+//   duration: string;
+//   dosages: Dosage[];
+// }
 interface Medicine {
   name: string;
   duration: string;
   dosages: Dosage[];
+  // Add these new optional properties
   newMedicineName?: string;
   newMedicineBrandName?: string;
 }
@@ -107,8 +116,6 @@ const customStyles: StylesConfig<OptionType, false, GroupBase<OptionType>> = {
 
 //Export Component
 const AddAppointment: React.FC = () => {
-
-
   //Get Id from Params
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
@@ -141,6 +148,10 @@ const AddAppointment: React.FC = () => {
     totalPayableAmount: "",
     is_drs_derma: "No",
     next_appoinment: "",
+    chief_complaint_cc: "",
+    drug_history_dh: "",
+    relevant_findings_rf: "",
+    on_examination_oe: "",
   });
   //Set Doctor Data
   const [doctors, setDoctors] = useState<Doctor[]>([]);
@@ -165,7 +176,15 @@ const AddAppointment: React.FC = () => {
   //Set Medicine List 
   const [options, setOptions] = useState<OptionType[]>([]);
   const [medicines, setMedicines] = useState<Medicine[]>([
-
+    // {
+    //   name: "Select Medicine",
+    //   duration: "",
+    //   dosages: [
+    //     { time: "Morning", amount: "" },
+    //     { time: "Mid Day", amount: "" },
+    //     { time: "Night", amount: "" },
+    //   ],
+    // },
   ]);
 
   //Set Error 
@@ -174,6 +193,10 @@ const AddAppointment: React.FC = () => {
   //modal states
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
+
+  // setNewMedicineInput, brandName state for adding new medicine 
+  // const [newMedicineInput, setNewMedicineInput] = useState("");
+  // const [newMedicineBrandInput, setNewMedicineBrandInput] = useState(""); 
 
   //Set Loading State
   const [loading, setLoading] = useState(false);
@@ -203,6 +226,7 @@ const AddAppointment: React.FC = () => {
       if (data) {
         setDoctors(data.doctors);
         setTreatmentList(data.treatments);
+        // setMedicinesdata(data.medicines);
 
         setFormData({
           patient_id: data.patient.patient_id,
@@ -228,6 +252,10 @@ const AddAppointment: React.FC = () => {
           gender: data.patient.gender,
           age: data.patient.age,
           city: data.patient.city,
+          chief_complaint_cc: data.chief_complaint_cc,
+          drug_history_dh: data.drug_history_dh,
+          relevant_findings_rf: data.relevant_findings_rf,
+          on_examination_oe: data.on_examination_oe,
           weight: data.patient.weight,
           blood_group: data.patient.blood_group,
           is_drs_derma: "",
@@ -326,6 +354,8 @@ const AddAppointment: React.FC = () => {
       return;
     }
 
+
+
     // Handle doctor discount type or amount change
     if (name === "doctorDiscountType" || name === "doctorDiscountAmount") {
       setFormData((prev) => {
@@ -367,6 +397,8 @@ const AddAppointment: React.FC = () => {
 
       return;
     }
+
+
 
     // Handle all other inputs
     setFormData((prev) => ({
@@ -454,9 +486,7 @@ const AddAppointment: React.FC = () => {
     });
   };
 
-  //view patient details in modal
-  // http://127.0.0.1:3000/doctor/patient-history/list/see-patient-history/1/
-  // Hospital-Managment-System-DRS-DRAMA\src\app\api\view-patient-history\[id]\route.ts
+  // modal view handler
   const handleViewClick = async (id: string) => {
     try {
       // const res = await fetch(`/api/view-patient-history/${id}`);
@@ -475,11 +505,25 @@ const AddAppointment: React.FC = () => {
   };
 
 
+
   const handleRemoveTreatment = (index: number) => {
     setTreatments((prev) => prev.filter((_, i) => index !== i));
   };
 
-
+  // const handleAddMedicine = () => {
+  //   setMedicines([
+  //     ...medicines,
+  //     {
+  //       name: "Select Medicine",
+  //       duration: "",
+  //       dosages: [
+  //         { time: "Morning", amount: "" },
+  //         { time: "Mid Day", amount: "" },
+  //         { time: "Night", amount: "" },
+  //       ],
+  //     },
+  //   ]);
+  // };
 
 
   const handleAddMedicine = () => {
@@ -500,7 +544,61 @@ const AddAppointment: React.FC = () => {
     ]);
   };
 
+  //  const handleAddNewMedicine = async (index: number) => {
 
+  //   const medicineToUpdate = medicines[index];
+  //   const newMedicineName = medicineToUpdate.newMedicineName;
+  //   const newMedicineBrandName = medicineToUpdate.newMedicineBrandName;
+  //   if (!newMedicineInput.trim()) {
+  //     setError("Medicine name cannot be empty.");
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   setError("");
+
+  //   try {
+  //     const res = await fetch("/api/medicine/add-medicine", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         // medicineName: newMedicineInput.trim(),
+  //         // brandName: newMedicineBrandInput.trim(),
+  //         medicineName: newMedicineName.trim(),
+  //         brandName: newMedicineBrandName.trim(),
+  //         quantity: 0, // A default quantity for a new medicine
+  //       }),
+  //     });
+
+  //     const result = await res.json();
+
+  //     if (!res.ok) {
+  //       throw new Error(result.error || "Failed to add new medicine.");
+  //     }
+
+  //     setOptions(prev => [
+  //       ...prev,
+  //       {
+  //         value: newMedicineName.trim().toLowerCase().replace(/\s+/g, "_"),
+  //         label: newMedicineName.trim()
+  //       }
+  //     ]);
+
+  //     alert(`"${newMedicineName.trim()}" added successfully to the medicine list!`);
+  //     setNewMedicineInput(""); // Clear the input field
+  //     setNewMedicineBrandInput("");
+
+
+  //     // Re-fetch the medicine options to update the dropdowns
+  //     // await getPrescribedData(id);
+  //   } catch (err: any) {
+  //     console.error("Error adding new medicine:", err);
+  //     setError(err.message || "Failed to add new medicine.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  //   };
   const handleAddNewMedicine = async (index: number) => {
     const medicineToUpdate = medicines[index];
     const newMedicineName = medicineToUpdate.newMedicineName;
@@ -542,9 +640,8 @@ const AddAppointment: React.FC = () => {
 
       // alert(`"${newMedicineName.trim()}" added successfully to the medicine list!`);
       Swal.fire({
-        position: "top-end",
         icon: "success",
-        title: `"${newMedicineName.trim()}" added successfully to the medicine list!`,
+        title: `"${newMedicineName.trim()}" Medicine added successfully!`,
         showConfirmButton: false,
         timer: 1500
       });
@@ -642,13 +739,8 @@ const AddAppointment: React.FC = () => {
   console.log(formData)
   console.log(treatments)
 
-
-
-
   return (
-
     <>
-
       <form onSubmit={handleSubmit}>
         <div className="trezo-card bg-white dark:bg-[#0c1427] mb-[25px] p-[20px] md:p-[25px] rounded-md">
           <div className="trezo-card-content">
@@ -663,23 +755,25 @@ const AddAppointment: React.FC = () => {
                     height={26}
                   />
 
-                  <h3>Create Prescription</h3>
+                  <h3 className=''>Create Prescription</h3>
+                </div>
+                <div className='flex justify-center items-center'>
                   <button
                     type="button"
-                    className="text-primary-500 leading-none custom-tooltip"
+                    // onClick={() => handleAddNewMedicine(index)} 
                     onClick={() => handleViewClick(formData.patient_id)}
+                    disabled={loading}
+                    className="font-medium inline-block transition-all rounded-md text-sm py-[8px] px-[14px] bg-[#8F03E4] text-white hover:bg-green-700"
                   >
-                    <i className="material-symbols-outlined !text-md">visibility</i>
+                    View Patient History
                   </button>
-
-
                 </div>
               </div>
 
               <div className="h-[1px] bg-gray-100 dark:bg-[#172036] -mx-[20px] md:-mx-[25px] my-[20px] md:my-[23px]"></div>
 
               {/* Patient Info */}
-              <h5>Patient Info</h5>
+              <h4>Patient Info</h4>
               <div className="sm:flex justify-between mt-[20px]">
                 <ul className="mb-[7px] sm:mb-0">
                   <li className="mb-[7px] text-md last:mb-0">
@@ -734,6 +828,7 @@ const AddAppointment: React.FC = () => {
                       type="date"
                       name="nextdate"
                       onChange={handleChange}
+
                     />
                   </span>
                 </div>
@@ -745,7 +840,7 @@ const AddAppointment: React.FC = () => {
             </div>
 
             {/* Select Doctor */}
-
+            {/* <h5 className="pb-5 mt-5">Prescritption</h5> */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-[20px] md:gap-[25px]">
               <div>
                 <label className="mb-[10px] text-black dark:text-white font-medium block">
@@ -845,7 +940,7 @@ const AddAppointment: React.FC = () => {
           </div>
 
           {/* Treatments */}
-          <h4 className="mt-16">Treatments <span className="text-danger-800">*</span></h4>
+          <h4 className="mt-16">Treatments</h4>
           {treatments.map((_singleTreatment, i) => (
             <div className="mb-10 mt-8" key={i}>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-[20px] md:gap-[25px]">
@@ -962,39 +1057,46 @@ const AddAppointment: React.FC = () => {
                     className="h-[55px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036]  dark:bg-[#0c1427] px-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
                   />
                 </div>
-                <div>
-                  <button
-                    onClick={() => handleRemoveTreatment(i)}
-                    type="button"
-                    className="font-medium mt-2 inline-block transition-all rounded-md text-sm py-[8px] px-[14px] bg-danger-500 text-white hover:bg-primary-400"
-                  >
-                    <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
-                      <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">
-                        remove
-                      </i>
-                      Remove Treatment
-                    </span>
-                  </button>
+                <div className='flex w-4/4 gap-4'>
+
+                  <div className="">
+                    <button
+                      onClick={handleAddTreatments}
+                      type="button"
+                      className="font-medium inline-block transition-all rounded-md text-sm py-[8px] px-[14px] bg-primary-500 text-white hover:bg-primary-400"
+                    >
+                      Add Treatments
+                      {/* <span className="inline-block relative ltr:pl-[19px] rtl:pr-[19px]">
+                          <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">
+                            add
+                          </i>
+                          
+                        </span> */}
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => handleRemoveTreatment(i)}
+                      type="button"
+                      className="font-medium  inline-block transition-all rounded-md text-sm py-[8px] px-[14px] bg-danger-500 text-white hover:bg-primary-400"
+                    >Remove Treatment
+                      {/* <span className="inline-block relative ltr:pl-[19px] rtl:pr-[19px]">
+                          <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">
+                            remove
+                          </i>
+                          
+                        </span> */}
+                    </button>
+                  </div>
+
+
                 </div>
               </div>
             </div>
           ))}
 
-          <div className="mt-5">
-            <button
-              onClick={handleAddTreatments}
-              type="button"
-              className="font-medium inline-block transition-all rounded-md text-sm py-[8px] px-[14px] bg-blue-500 text-white hover:bg-primary-400"
-            >
-              <span className="inline-block relative ltr:pl-[29px] rtl:pr-[29px]">
-                <i className="material-symbols-outlined ltr:left-0 rtl:right-0 absolute top-1/2 -translate-y-1/2">
-                  add
-                </i>
-                Add More Treatments
-              </span>
-            </button>
-          </div>
-          <h4 className="mt-16">Medicines <span className="text-danger-800">*</span></h4>
+
+          <h4 className="mt-16">Medicines </h4>
           {medicines.map((medicine, index) => (
             <div className="flex justify-between gap-8 mt-8" key={index}>
               <div className="w-1/3">
@@ -1128,8 +1230,57 @@ const AddAppointment: React.FC = () => {
               </button>
             </span>
           </div>
+          {/* rx */}
+
+
+          <div className="my-6 mt-20 last:mb-0">
+            <label className="mb-[12px] text-black font-medium block">C/C (Chief Complaint)</label>
+            <textarea
+              name="chief_complaint_cc"
+              value={formData.chief_complaint_cc}
+              onChange={handleChange}
+              className="h-[140px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] p-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              placeholder="Write Chief Complaint"
+            ></textarea>
+          </div>
+
+
           <div className="my-8 last:mb-0">
-            <label className="mb-[12px] font-medium block">Advise</label>
+            <label className="mb-[12px] text-black font-medium block">D/H (Drug History)</label>
+            <textarea
+              name="drug_history_dh"
+              value={formData.drug_history_dh}
+              onChange={handleChange}
+              className="h-[140px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] p-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              placeholder="Write Drug History"
+            ></textarea>
+          </div>
+
+
+          <div className="my-8 last:mb-0">
+            <label className="mb-[12px] text-black font-medium block">R/F (Relevant Findings)</label>
+            <textarea
+              name="relevant_findings_rf"
+              value={formData.relevant_findings_rf}
+              onChange={handleChange}
+              className="h-[140px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] p-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              placeholder="Write Relevant Findings"
+            ></textarea>
+          </div>
+
+          <div className="my-8 last:mb-0">
+            <label className="mb-[12px] text-black font-medium block">O/E (On Examination)</label>
+            <textarea
+              name="on_examination_oe"
+              value={formData.on_examination_oe}
+              onChange={handleChange}
+              className="h-[140px] rounded-md text-black dark:text-white border border-gray-200 dark:border-[#172036] bg-white dark:bg-[#0c1427] p-[17px] block w-full outline-0 transition-all placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:border-primary-500"
+              placeholder="Write On Examination"
+            ></textarea>
+          </div>
+
+          <div className="my-8 last:mb-0">
+            <label className="mb-[12px] text-black font-medium block">Advise</label>
             <textarea
               name="advise"
               value={formData.advise}
@@ -1166,7 +1317,6 @@ const AddAppointment: React.FC = () => {
         </div>
       </form>
 
-
       {isOpen && selectedPatient && (
 
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.4)]">
@@ -1179,9 +1329,9 @@ const AddAppointment: React.FC = () => {
             </button>
             {/* <h2 className="text-2xl font-bold mb-2">Patient Details</h2> */}
             <p className="text-lg font-bold underline">Patient Timeline:</p>
-            <p className="text-md">
+            <div className="text-md">
               <PatientHistoryTimeline patientId={formData.patient_id} />
-            </p>
+            </div>
           </div>
         </div>
         // view modal
@@ -1189,14 +1339,7 @@ const AddAppointment: React.FC = () => {
 
 
     </>
-
-
-
-
-
   );
-
-
 };
 
 export default AddAppointment;

@@ -124,13 +124,13 @@ export default function Page() {
     new Date(dateStr).toISOString().split("T")[0];
 
   function getDateTimeKey(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleString('en-US', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  });
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    });
   }
-  
+
   const formatDate = (dateStr: string): string =>
     new Date(dateStr).toLocaleString("en-US", {
       weekday: "long",
@@ -159,30 +159,30 @@ export default function Page() {
 
 
   if (data.patient.onboarded_at) {
-          const onboardDateKey = getDateKey(data.patient.onboarded_at);
-            if (!groupedTimeline[onboardDateKey]) {
-            groupedTimeline[onboardDateKey] = {
-            date: onboardDateKey,
-            formattedDate: formatDate(data.patient.onboarded_at),
-            events: [],
-            };
-          }
-          groupedTimeline[onboardDateKey].events.push({
-              title: "Patient Onboarded",
-              // Correct the description to be a valid JSON string
-              description: JSON.stringify({
-              // onboard_message: `Patient ${data.patient.patient_name} was registered in the system at ${getDateTimeKey(data.patient.onboarded_at)}.`,
-              onboard_message: `Patient ${data.patient.patient_name} was registered in the system at ${getDateTimeKey(data.patient.onboarded_at)}.`,
-              invoice: null,
-              treatments: null,
-              medicines: null,
-              cost: null,
-              }),
-              author: "System",
-              color: "bg-blue-500",
+    const onboardDateKey = getDateKey(data.patient.onboarded_at);
+    if (!groupedTimeline[onboardDateKey]) {
+      groupedTimeline[onboardDateKey] = {
+        date: onboardDateKey,
+        formattedDate: formatDate(data.patient.onboarded_at),
+        events: [],
+      };
+    }
+    groupedTimeline[onboardDateKey].events.push({
+      title: "Patient Onboarded",
+      // Correct the description to be a valid JSON string
+      description: JSON.stringify({
+        // onboard_message: `Patient ${data.patient.patient_name} was registered in the system at ${getDateTimeKey(data.patient.onboarded_at)}.`,
+        onboard_message: `Patient ${data.patient.patient_name} was registered in the system at ${getDateTimeKey(data.patient.onboarded_at)}.`,
+        invoice: null,
+        treatments: null,
+        medicines: null,
+        cost: null,
+      }),
+      author: "System",
+      color: "bg-blue-500",
       participants: data.patient.image_url ? [data.patient.image_url] : [],
-   });
-}
+    });
+  }
 
   // Build prescription events
   data.prescriptions.forEach((p) => {
@@ -225,7 +225,7 @@ export default function Page() {
       invoice: null,
       // treatments: treatmentsHTML + medicineHTML,
       treatments: treatmentsHTML,
-      medicines:  medicineHTML,
+      medicines: medicineHTML,
       cost: costHTML,
     });
 
@@ -274,7 +274,7 @@ export default function Page() {
         date: dateKey,
         formattedDate: formatDate(p.paid_at),
         events: [],
-     
+
       };
     }
 
@@ -315,7 +315,7 @@ export default function Page() {
       author: p.collected_by,
       color: "bg-green-600",
       participants: [],
-      invoice_id: p.invoice_id, 
+      invoice_id: p.invoice_id,
     });
   });
 
@@ -324,8 +324,8 @@ export default function Page() {
   );
 
   //date accordion
-  const DateAccordion = ({ title, children, defaultOpen = false } : DateAccordionProps) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const DateAccordion = ({ title, children, defaultOpen = false }: DateAccordionProps) => {
+    const [isOpen, setIsOpen] = useState(defaultOpen);
 
     return (
       <div className="mb-4">
@@ -337,9 +337,8 @@ export default function Page() {
           <span>{isOpen ? '▲' : '▼'}</span>
         </button>
         <div
-          className={`overflow-hidden transition-all duration-300 ease-in-out ${
-            isOpen ? 'max-h-screen opacity-100 mt-2' : 'max-h-0 opacity-0'
-          }`}
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-screen opacity-100 mt-2' : 'max-h-0 opacity-0'
+            }`}
         >
           <div className="p-4 bg-white dark:bg-[#0c1427] rounded-b-lg border border-t-0 border-gray-200 dark:border-gray-700">
             {children}
@@ -349,54 +348,54 @@ export default function Page() {
     );
   };
 
-  
+
 
   // Accordion section component
-//   const AccordionSection = ({ title, html, defaultOpen = false }: { title: string; html: string; defaultOpen?: boolean }) => {
-//   const [open, setOpen] = useState(defaultOpen); // Use the defaultOpen prop here
-//   if (!html || html.trim() === "") return null;
-//   return (
-//     <div className=" rounded-md mb-2">
-//       <button
-//         onClick={() => setOpen(!open)}
-//         className="w-full flex justify-between items-center px-3 py-2 bg-gray-100 dark:bg-gray-800 font-semibold"
-//       >
-//         {title}
-//         <span>{open ? "▲" : "▼"}</span>
-//       </button>
-//       {open && ( // 'open' state is now initialized by defaultOpen
-//         <div
-//           className="p-3 text-sm bg-white dark:bg-[#0c1427]"
-//           dangerouslySetInnerHTML={{ __html: html }}
-//         />
-//       )}
-//     </div>
-//   );
-// };
-const AccordionSection = ({ title, html, defaultOpen = false }: { title: React.ReactNode; html: string; defaultOpen?: boolean }) => {
-  const [open, setOpen] = useState(defaultOpen);
+  //   const AccordionSection = ({ title, html, defaultOpen = false }: { title: string; html: string; defaultOpen?: boolean }) => {
+  //   const [open, setOpen] = useState(defaultOpen); // Use the defaultOpen prop here
+  //   if (!html || html.trim() === "") return null;
+  //   return (
+  //     <div className=" rounded-md mb-2">
+  //       <button
+  //         onClick={() => setOpen(!open)}
+  //         className="w-full flex justify-between items-center px-3 py-2 bg-gray-100 dark:bg-gray-800 font-semibold"
+  //       >
+  //         {title}
+  //         <span>{open ? "▲" : "▼"}</span>
+  //       </button>
+  //       {open && ( // 'open' state is now initialized by defaultOpen
+  //         <div
+  //           className="p-3 text-sm bg-white dark:bg-[#0c1427]"
+  //           dangerouslySetInnerHTML={{ __html: html }}
+  //         />
+  //       )}
+  //     </div>
+  //   );
+  // };
+  const AccordionSection = ({ title, html, defaultOpen = false }: { title: React.ReactNode; html: string; defaultOpen?: boolean }) => {
+    const [open, setOpen] = useState(defaultOpen);
 
-  if (!html || html.trim() === "") return null;
+    if (!html || html.trim() === "") return null;
 
-  return (
-    <div className=" rounded-md mb-2">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex justify-between items-center px-3 py-2 bg-gray-100 dark:bg-gray-800 font-semibold"
-      >
-        {/* The title can now be a string or a React element */}
-        {title}
-        <span>{open ? "▲" : "▼"}</span>
-      </button>
-      {open && (
-        <div
-          className="p-3 text-sm bg-white dark:bg-[#0c1427]"
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
-      )}
-    </div>
-  );
-};
+    return (
+      <div className=" rounded-md mb-2">
+        <button
+          onClick={() => setOpen(!open)}
+          className="w-full flex justify-between items-center px-3 py-2 bg-gray-100 dark:bg-gray-800 font-semibold"
+        >
+          {/* The title can now be a string or a React element */}
+          {title}
+          <span>{open ? "▲" : "▼"}</span>
+        </button>
+        {open && (
+          <div
+            className="p-3 text-sm bg-white dark:bg-[#0c1427]"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="p-6 space-y-6">
@@ -445,24 +444,24 @@ const AccordionSection = ({ title, html, defaultOpen = false }: { title: React.R
                               )}
                               {/* Invoice Details section: move hyperlink inside accordion if invoice_id exists */}
                               {parsed.invoice && (
-                               <AccordionSection
-                                          title={
-                                            event.invoice_id ? (
-                                              <a
-                                                href={`/doctor/invoice/view-invoice/${event.invoice_id}`}
-                                                className="text-blue-600 underline"
-                                              >
-                                                Invoice Details
-                                              </a>
-                                            ) : (
-                                              "Invoice Details"
-                                            )
-                                          }
-                                          html={
-                                             parsed.invoice
-                                          }
-                                          defaultOpen={isFirstDateAccordion}
-                                        />
+                                <AccordionSection
+                                  title={
+                                    event.invoice_id ? (
+                                      <a
+                                        href={`/doctor/invoice/view-invoice/${event.invoice_id}`}
+                                        className="text-blue-600 underline"
+                                      >
+                                        Invoice Details
+                                      </a>
+                                    ) : (
+                                      "Invoice Details"
+                                    )
+                                  }
+                                  html={
+                                    parsed.invoice
+                                  }
+                                  defaultOpen={isFirstDateAccordion}
+                                />
 
                               )}
                               <AccordionSection title="Treatments" html={parsed.treatments} defaultOpen={isFirstDateAccordion} />
